@@ -17,7 +17,9 @@ X_test_scaled = scaler.transform(X_test)
 
 # Build the TensorFlow model
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Dense(10, activation='relu', input_shape=(X_train.shape[1],)),
+    tf.keras.layers.Dense(64, activation='relu', input_shape=(X_train.shape[1],)),
+    tf.keras.layers.Dropout(0.5),
+    tf.keras.layers.Dense(32, activation='relu'),
     tf.keras.layers.Dense(3, activation='softmax')
 ])
 
@@ -27,7 +29,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # Train the model
-model.fit(X_train_scaled, y_train, epochs=50, batch_size=32, validation_split=0.1)
+history = model.fit(X_train_scaled, y_train, epochs=100, batch_size=16, validation_split=0.1)
 
 # Evaluate the model on the test set
 loss, accuracy = model.evaluate(X_test_scaled, y_test)
